@@ -6,10 +6,10 @@ class Simulation:
     # acceleration for simulated world
     accel = -9.8
 
-    def __init__(self, time_step, window_x, window_y, x_vel, y_vel, walls , m_win):
+    def __init__(self, time_step, window_x, window_y, walls , m_win):
         self.time_step = time_step
-        self.x_vel = x_vel
-        self.y_vel = y_vel
+        self.x_vel = 0.0
+        self.y_vel = 0.0
         self.window_x = window_x
         self.window_y = window_y
         # create projectile object
@@ -18,6 +18,10 @@ class Simulation:
         self.x_bnc = False
         self.y_bnc = False
         self.m_win = m_win
+
+    def set_vel(self, vel):
+        self.x_vel = vel[0]
+        self.y_vel = vel[1]
 
     def loop(self):
 
