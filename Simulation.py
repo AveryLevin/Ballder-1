@@ -6,7 +6,7 @@ class Simulation:
     # acceleration for simulated world
     accel = -9.8
 
-    def __init__(self, time_step, window_x, window_y, x_vel, y_vel, wall , m_win):
+    def __init__(self, time_step, window_x, window_y, x_vel, y_vel, walls , m_win):
         self.time_step = time_step
         self.x_vel = x_vel
         self.y_vel = y_vel
@@ -14,7 +14,7 @@ class Simulation:
         self.window_y = window_y
         # create projectile object
         self.ball = Projectile(2, 0.8, m_win)
-        self.wall = wall
+        self.walls = walls
         self.x_bnc = False
         self.y_bnc = False
         self.m_win = m_win
@@ -51,14 +51,15 @@ class Simulation:
                 return True
             else:
                 return False
-        elif ( self.ball.getX() >= self.wall.llx and self.ball.getX() <= self.wall.urx and self.ball.getY() >= self.wall.lly and self.ball.getY() <= self.wall.ury) :
-            if self.x_bnc == False:
-                print("X BOUNCE!!")
-                self.x_bnc = True
-                return True
-            else:
-                return False
         else:
+            for i in self.walls:
+                if ( self.ball.getX() >= i.llx and self.ball.getX() <= i.urx and self.ball.getY() >= i.lly and self.ball.getY() <= i.ury) :
+                    if self.x_bnc == False:
+                        print("X BOUNCE!!")
+                        self.x_bnc = True
+                        return True
+                    else:
+                        return False
             self.x_bnc = False
             return False
 

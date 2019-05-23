@@ -17,9 +17,10 @@ def main():
     m_win.setBackground("light blue")
 
     wall_a = Wall(Point(80, 20), Point(85, 80), m_win)
-    wall_b = Wall(Point(150, 0), Point(152, 40), m_win)
-    walls = [wall_a, wall_b]
-    m_sim = Simulation(time_step, win_x, win_y, xv, yv, wall_a, m_win)
+    wall_b = Wall(Point(150, 0), Point(152, 20), m_win)
+    wall_c = Wall(Point(150, 80), Point(152, 100), m_win)
+    walls = [wall_a, wall_b, wall_c]
+    m_sim = Simulation(time_step, win_x, win_y, xv, yv, walls, m_win)
     # goal setup
     llx = 80
     lly = 0
