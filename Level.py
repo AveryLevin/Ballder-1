@@ -75,7 +75,7 @@ class Level:
                 # wait for click
                 self.m_win.getMouse()
                 break
-            time.sleep(self.time_step/10)
+            # time.sleep(self.time_step/10)
 
 
 
