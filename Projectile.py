@@ -12,15 +12,41 @@ class Projectile:
         self.y = 1.0
         self.m_win = m_win
         # animation
-        self.c = Circle(Point(self.getX(),self.getY()), self.radius)
-        self.c.setFill("orange")
-        self.c.draw(m_win)
+        self.a = Circle(Point(self.getX(),self.getY()), self.radius)
+        self.a.setFill("orange")
+        self.a.draw(m_win)
+
+        self.b = Circle(Point(self.getX(),self.getY()), self.radius)
+        self.b.setFill("orange")
+        self.b.draw(m_win)
+
+        self.draw_count = 0
 
     def draw(self):
-        self.c.undraw()
-        self.c = Circle(Point(self.getX(),self.getY()), self.radius)
-        self.c.setFill("orange")
-        self.c.draw(self.m_win)
+        if (self.draw_count == 0):
+            self.draw_a()
+        elif (self.draw_count == 1):
+            self.draw_b()
+
+        print("draw loop")
+
+    def draw_b(self):
+        print("B")
+        # draws new circle B
+        self.b.undraw()
+        self.b = Circle(Point(self.getX(),self.getY()), self.radius)
+        self.b.setFill("orange")
+        self.b.draw(self.m_win)
+        self.draw_count = 0
+
+    def draw_a(self):
+        print("A")
+        # draws new circle A
+        self.a.undraw()
+        self.a = Circle(Point(self.getX(),self.getY()), self.radius)
+        self.a.setFill("orange")
+        self.a.draw(self.m_win)
+        self.draw_count = 1
 
     def getX(self):
         return self.x
