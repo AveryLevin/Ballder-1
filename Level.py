@@ -4,25 +4,28 @@ from graphics import *
 from Simulation import *
 from Target import *
 from Aimer import *
+import time
 class Level:
 
     # x_range = [ [20,40], [40,60], [60,80], [80,100], [100,120], [120,140], [140,160] ]
     # y_range = [ [0,20], [20,40], [40,60], [60,80], [80,100] ]
     x_range = [ [20,25], [40,45], [60,65], [80,85], [100,105], [120,125], [140,145] ]
-    y_range = [ [0,20], [70,100], [0,40], [50,100], [0,60] ]
+    y_range = [ [0,10], [70,100], [0,40], [50,100], [0,60] ]
 
     def __init__(self, level_num, difficulty, moving_target):
+        self.curr_time = int(round(time.time()*1000))
+        self.a_curr_time = int(round(time.time()*1000))
         self.difficulty = difficulty
         self.moves = moving_target
         self.level_num = level_num
 
-        self.rad = 2
+        self.rad = 1
         self.time_step = 0.05
         self.win_x = 200.0
         self.win_y = 100.0
         self.center = Point(self.win_x / 2, self.win_y / 2)
         # create window
-        self.m_win = GraphWin( ("Level" + str(self.level_num)), 1000, 500)
+        self.m_win = GraphWin( ("Level" + str(self.level_num)), 1000, 500, autoflush=False)
         # set up coordinate system
         self.m_win.setCoords(0, 0, self.win_x, self.win_y)
         self.prime_msg()
@@ -31,7 +34,7 @@ class Level:
         # make walls
         self.walls = self.get_walls()
         # start simulation
-        self.sim = Simulation(self.time_step, self.win_x, self.win_y, self.walls, self.m_win)
+        self.sim = Simulation(self.time_step, self.win_x, self.win_y, self.walls, 0.8, "orange", self.m_win)
         # static target for now
         self.target = Target(Point(175,0), Point(180,5), False, self.m_win)
 
@@ -50,9 +53,24 @@ class Level:
 
 
     def run_game(self):
+        lose_count = 0
         # run loop
         for i in range(10000):
-            # plot one pixel
+            self.prev_time = self.curr_time
+            self.curr_time = int(round(time.time()*1000))
+            self.step = self.curr_time - self.prev_time
+
+            """
+            while (self.step < 10):
+                self.curr_time = int(round(time.time()*1000))
+                self.step = self.curr_time - self.prev_time
+            """
+            
+
+            # print("TIME:", self.curr_time)
+            print("STEP:", max(1,self.step), "ms")
+            print("RATE:", (1000/ max(1,self.step)), "Hz.")
+
 
             self.sim.loop()
             if self.target.hit_target(self.sim.ball, self.m_win):
@@ -64,8 +82,12 @@ class Level:
                 print("YOU WON! CONGRATULATIONS!")
                 # wait for click
                 self.m_win.getMouse()
+                self.m_win.close()
+                return True
                 break
             elif self.sim.ball.getY() < -1:
+                lose_count += 1
+            if lose_count >=5:
                 message = Text(Point(50,50), "YOU LOSE!")
                 message.setSize(30)
                 message.setStyle("bold")
@@ -74,8 +96,20 @@ class Level:
                 print("YOU LOSE! Try again? (y/n)")
                 # wait for click
                 self.m_win.getMouse()
+                self.m_win.close()
+                return False
                 break
-            # time.sleep(self.time_step/10)
+
+            if i%2 == 0:
+                self.a_prev_time = self.a_curr_time
+                self.a_curr_time = int(round(time.time()*1000))
+                self.a_step = self.a_curr_time - self.a_prev_time
+
+                print("ANIMATION STEP:", self.a_step, "ms")
+                print("ANIMATION RATE:", (1000/max(1,self.step)), "Hz.")
+
+                if i%2 == 0:
+                    update(60)
 
 
 
@@ -112,7 +146,7 @@ class Level:
                 p_b = Point(rx, uy)
                 print("expected:", self.difficulty**2)
                 print("length:", (x)*self.difficulty + (y))
-                walls[x] = Wall(p_a, p_b, self.m_win)
+                walls[x] = Wall(p_a, p_b, True, self.m_win)
         return walls
 
     def prime_msg(self):

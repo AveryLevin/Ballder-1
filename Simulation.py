@@ -6,14 +6,14 @@ class Simulation:
     # acceleration for simulated world
     accel = -9.8
 
-    def __init__(self, time_step, window_x, window_y, walls , m_win):
+    def __init__(self, time_step, window_x, window_y, walls , elas, color, m_win):
         self.time_step = time_step
         self.x_vel = 0.0
         self.y_vel = 0.0
         self.window_x = window_x
         self.window_y = window_y
         # create projectile object
-        self.ball = Projectile(2, 0.8, m_win)
+        self.ball = Projectile(2, elas, color, m_win)
         self.walls = walls
         self.x_bnc = False
         self.y_bnc = False
@@ -44,13 +44,13 @@ class Simulation:
         # draw ball
         self.ball.draw()
         # provide debug position readouts
-        print("X:", x, "\t", "Y:", y, "\tACCELERATION:", (0.5*Simulation.accel*(self.time_step**2)))
+        #print("X:", self.ball.getX(), "\t", "Y:", self.ball.getY(), "\tACCELERATION:", (0.5*Simulation.accel*(self.time_step**2)))
 
 
     def check_for_x_bounce(self):
         if self.ball.getX() <= 0 or self.ball.getX() >= self.window_x:
             if self.x_bnc == False:
-                print("X BOUNCE!!")
+                #print("X BOUNCE!!")
                 self.x_bnc = True
                 return True
             else:
@@ -59,7 +59,7 @@ class Simulation:
             for i in self.walls:
                 if ( self.ball.getX() >= i.llx and self.ball.getX() <= i.urx and self.ball.getY() >= i.lly and self.ball.getY() <= i.ury) :
                     if self.x_bnc == False:
-                        print("X BOUNCE!!")
+                        #print("X BOUNCE!!")
                         self.x_bnc = True
                         return True
                     else:
@@ -72,7 +72,7 @@ class Simulation:
     def check_for_y_bounce(self):
         if self.ball.getY() <= 0 or self.ball.getY() >= self.window_y:
             if self.y_bnc == False:
-                print("Y BOUNCE!!")
+                #print("Y BOUNCE!!")
                 self.y_bnc = True
                 return True
             else:
