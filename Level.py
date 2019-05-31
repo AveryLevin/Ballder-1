@@ -46,7 +46,7 @@ class Level:
             self.target.set_moves(False)
         else:
             # dont use aimer
-            vel = [random.randint(2,30), random.randint(2,30)]
+            vel = [random.randint(15,30), random.randint(15,30)]
             self.sim.set_vel(vel)
             # make target move
             self.target.set_moves(True)
@@ -79,7 +79,14 @@ class Level:
                 message.setStyle("bold")
                 message.setTextColor("green")
                 message.draw(self.m_win)
-                print("YOU WON! CONGRATULATIONS!")
+
+                message_b = Text(Point(50,30), "Click screen to exit level.")
+                message_b.setSize(20)
+                message_b.setStyle("bold")
+                message_b.setTextColor("dark green")
+                message_b.draw(self.m_win)
+
+                #print("YOU WON! CONGRATULATIONS!")
                 # wait for click
                 self.m_win.getMouse()
                 self.m_win.close()
@@ -91,9 +98,16 @@ class Level:
                 message = Text(Point(50,50), "YOU LOSE!")
                 message.setSize(30)
                 message.setStyle("bold")
-                message.setTextColor("black")
+                message.setTextColor("red")
                 message.draw(self.m_win)
-                print("YOU LOSE! Try again? (y/n)")
+
+                message_b = Text(Point(50,30), "Click screen to exit level.")
+                message_b.setSize(20)
+                message_b.setStyle("bold")
+                message_b.setTextColor("dark red")
+                message_b.draw(self.m_win)
+
+                #print("YOU LOSE! Try again? (y/n)")
                 # wait for click
                 self.m_win.getMouse()
                 self.m_win.close()
@@ -109,7 +123,7 @@ class Level:
                 print("ANIMATION RATE:", (1000/max(1,self.step)), "Hz.")
 
                 if i%2 == 0:
-                    update(60)
+                    update(80)
 
 
 
@@ -158,7 +172,7 @@ class Level:
         if(self.moves):
             instructions = Text( p_inst, ("Your goal is to catch the ball.\nMove the goal with the left/right arrow keys\nPress any key to continue"))
         else:
-            instructions = Text( p_inst, ("Your goal is to score ball.\nAim with the up/down/left/right arrow keys\nPress any key to continue"))
+            instructions = Text( p_inst, ("Your goal is to score the ball.\nAim with the up/down/left/right arrow keys\nHit enter to shoot\nPress any key to continue"))
 
         self.m_win.setBackground("dark blue")
         greet.setSize(30)

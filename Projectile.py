@@ -8,8 +8,8 @@ class Projectile:
     def __init__( self, radius, elasticity, color, m_win):
         self.elasticity = elasticity
         self.radius = radius
-        self.x = 1.0
-        self.y = 1.0
+        self.x = radius + .05
+        self.y = radius + .05
         self.x_prev = self.x
         self.y_prev = self.y
         self.m_win = m_win
